@@ -1,0 +1,7 @@
+pip>=9.0.0
+numpy
+pandas
+scikit-learn
+scipy
+tensorflow>=1.0.0
+google-api-python-client
