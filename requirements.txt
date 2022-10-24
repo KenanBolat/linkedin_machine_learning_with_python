@@ -4,3 +4,5 @@ ipykernel
 openpyxl
 matplotlib
 sklearn
+tensorflow
+nltk
