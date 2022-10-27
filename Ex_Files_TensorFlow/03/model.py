@@ -35,52 +35,52 @@ training_epochs = 100
 display_step = 5
 
 # Define how many inputs and outputs are in our neural network
-number_of_inputs =
-number_of_outputs =
+number_of_inputs =  9
+number_of_outputs = 1
 
 # Define how many neurons we want in each layer of our neural network
-layer_1_nodes =
-layer_2_nodes =
-layer_3_nodes =
+layer_1_nodes = 50
+layer_2_nodes = 100
+layer_3_nodes = 50
 
 # Section One: Define the layers of the neural network itself
+tf.compat.v1.disable_eager_execution()
 
 # Input Layer
 with tf.variable_scope('input'):
-    X =
+    X = tf.compat.v1.placeholder(dtype=tf.float32, shape=(None, number_of_inputs))
 
 # Layer 1
 with tf.variable_scope('layer_1'):
-    weights =
-    biases =
-    layer_1_output =
+    weights =tf.compat.v1.get_variable(name='weights_1', shape=[number_of_inputs, layer_1_nodes], initializer=tf.compat.v1.contrib.layers.xavier_initializer)
+    biases = tf.compat.v1.get_variable(name='biases_1', shape=[layer_1_nodes], initializer=tf.compat.v1.zeros_initializer())
+    layer_1_output = tf.nn.relu(tf.matmul(X, weights) + biases)
 
 # Layer 2
 with tf.variable_scope('layer_2'):
-
-
-
+    weights =tf.compat.v1.get_variable(name='weights_2', shape=[layer_1_nodes, layer_2_nodes], initializer=tf.compat.v1.contrib.layers.xavier_initializer)
+    biases = tf.compat.v1.get_variable(name='biases_2', shape=[layer_2_nodes], initializer=tf.compat.v1.zeros_initializer())
+    layer_2_output = tf.nn.relu(tf.matmul(layer_1_output, weights) + biases)
 
 # Layer 3
 with tf.variable_scope('layer_3'):
-
-
-
-
+    weights =tf.compat.v1.get_variable(name='weights_3', shape=[layer_2_nodes, layer_3_nodes], initializer=tf.compat.v1.contrib.layers.xavier_initializer)
+    biases = tf.compat.v1.get_variable(name='biases_3', shape=[layer_3_nodes], initializer=tf.compat.v1.zeros_initializer())
+    layer_3_output = tf.nn.relu(tf.matmul(layer_2_output, weights) + biases)
 # Output Layer
 with tf.variable_scope('output'):
-
-
-
+    weights = tf.compat.v1.get_variable(name='weights_4', shape=[layer_3_nodes, number_of_outputs], initializer=tf.compat.v1.contrib.layers.xavier_initializer)
+    biases = tf.compat.v1.get_variable(name='biases_4', shape=[number_of_outputs], initializer=tf.compat.v1.zeros_initializer())
+    prediction = tf.nn.relu(tf.matmul(layer_3_output, weights) + biases)
 
 # Section Two: Define the cost function of the neural network that will measure prediction accuracy during training
 
-with tf.variable_scope('cost'):
-    Y =
-    cost =
+with tf.compat.v1.variable_scope('cost'):
+    Y = tf.compat.v1.placeholder(tf.float32, shape=(None, 1))
+    cost = tf.compat.v1.reduce_mean(tf.compat.v1.squared_difference(prediction, Y))
 
 
 # Section Three: Define the optimizer function that will be run to optimize the neural network
 
-with tf.variable_scope('train'):
-    optimizer =
+with tf.compat.v1.variable_scope('train'):
+    optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
